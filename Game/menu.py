@@ -95,9 +95,9 @@ def menu(CUT, var, noQuestion=False, Answer=None):
 
         if var == 'dead':
             print_text(CUT.win, "You died, but we can give one more chance", 100,  90)
-            print_text(CUT.win, "Want to start at the begining? (b)",        100, 130)
-            print_text(CUT.win, "Start from saved point? (s)",               100, 170)
-            print_text(CUT.win, "If you disappointed, you can escape (q)",   100, 210)
+            print_text(CUT.win, "Want to start at the  (b)egining?",        100, 130)
+            print_text(CUT.win, "Start from (s)aved point?",               100, 170)
+            print_text(CUT.win, "If you disappointed, you can (q)uit",   100, 210)
 
             for ev in event.get():
                 if ev.type == QUIT: CUT.game_over = True; mixer.music.stop(); return None
