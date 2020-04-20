@@ -1,7 +1,7 @@
 '''
     CUT,
-         written by V.Kurshakov.
-         with great thanks to Kenney Vleugels (www.kenney.nl)
+         написано В. Куршаковым.
+         с большой благодарностью Kenney Vleugels (www.kenney.nl)
 
     Задачи:
 
@@ -19,7 +19,9 @@
             ~syntax: win.blit(bck, (dchar.x, dchar.y))
             только нужно ещё добавить ограничения, чтоб мы не видели черный экран
             Да, это было просто картинка странно сдвигается
-    - Можно сделать на флажках просто чек-поинты!
+    + Можно сделать на флажках просто чек-поинты!
+        (После того, как мы сохраняем координаты персоонажа, должно быть проще,
+         20.04.2020, 16:35)
 
 
 '''
@@ -91,7 +93,6 @@ class Game:
 
         self.environment.bx += -0.05 * self.char.velocity[0]
         self.environment.by += -0.2 * self.char.velocity[1]
-        #print(self.environment.bx, self.environment.by)
 
         self.char.update(self.environment)
 
@@ -118,9 +119,18 @@ class Game:
 
             elif el in self.environment.enemies_group:
                 el.hit(self.char)
-            # elif el.sign == 'f' and collide_rect(self.char, el):
-            #     save(self.char, self.environment)
-            # проблема с сочетанием смерти и попадением на флаги
+
+                if el.isActive:
+                    el.detect(self.char)
+
+                # if el.isUndergo:
+                #    if el.isStaying:
+                #        el.attack()
+                #    else:
+                #       pass
+
+            elif el.sign == 'f' and collide_rect(self.char, el):
+                save(self.char, self.environment)
 
         if self.char.isDuck:
             #   неизбежно пока, хочу видеть эту аниму

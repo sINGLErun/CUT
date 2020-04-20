@@ -68,7 +68,7 @@ def load(level_number, screen_bounds, music_isNew=True, needs_bag=False):
              '             s       <--',
              '   <->      <-->        ',
              '        =               ',
-             '   p                    ',
+             '                        ',
              '________________________'],
              bx=-600,
              by=-670)
@@ -93,7 +93,7 @@ def load(level_number, screen_bounds, music_isNew=True, needs_bag=False):
              '                               <--',
              '                                  ',
              '                         <>       ',
-             'op                  <>            ',
+             'o                   <>            ',
              '--->            s s               ',
              '              <--->        =     b',
              '         <>          ssG        <-',
@@ -118,7 +118,7 @@ def load(level_number, screen_bounds, music_isNew=True, needs_bag=False):
              '                            s  =      ',
              '           s   o           <->        ',
              '          <>  <-->     s s           s',
-             'op                    <-->          <-',
+             'o                     <-->          <-',
              '--->   sf         s                   ',
              '       <-->     <->                   ',
              '                                s     ',
@@ -163,9 +163,15 @@ def load(level_number, screen_bounds, music_isNew=True, needs_bag=False):
                 model.append(l[:-2])
 
             if music_isNew:
-                if level_number == '1': mixer.music.load(join(Sounds, 'Starbound OST Via Aurora.ogg'))
-                if level_number == '2': mixer.music.load(join(Sounds, 'Gareth Coker feat. Tom Boyd - Up the Spirit Caverns Walls.ogg'))
-                if level_number == '3': mixer.music.load(join(Sounds, 'Michael Logozar - Timelapse.mp3'))
+                if level_number == '1':
+                    mixer.music.load(join(Sounds,
+                                     'Starbound OST Via Aurora.ogg'))
+                if level_number == '2':
+                    mixer.music.load(join(Sounds,
+                    'Gareth Coker feat. Tom Boyd - Up the Spirit Caverns Walls.ogg'))
+                if level_number == '3':
+                    mixer.music.load(join(Sounds,
+                                        'Michael Logozar - Timelapse.mp3'))
                 mixer.music.play(0)
 
 

@@ -57,13 +57,13 @@ class environment(Sprite):
             =        |  полублок закруглёный
             -        |  полублок (центральный прямоугольник)
          < или >     |  кривой полублок
-            p        |  персонаж
            `A`       |  ключ цвета А
           `ia`       |  дверь цвета а и открывает уровень i
             o        |  открытая дверь
-            s        |  пила
             j        |  алмаз
             f        |  флажок
+            s        |  пила
+            L        |  лавовая змея
 
     '''
 
@@ -91,12 +91,12 @@ class environment(Sprite):
         self.br = self.BACKGROUND_IMAGE.get_rect()
 
         self.PLATFORM_IMAGE_DICT = {
-        '_': load(join(Images,
-        f'Ground\\{landscape}\\{landscape}Mid{str(self.block_size)}.png')),
+        '_': load(join(Images, f'Ground\\{landscape}\\{landscape}Mid{str(self.block_size)}.png')),
         '=': load(join(Images, f'Ground\\{landscape}\\{landscape}Half{str(self.block_size)}.png')),
         '<': load(join(Images, f'Ground\\{landscape}\\{landscape}Half_left{str(self.block_size)}.png')),
         '-': load(join(Images, f'Ground\\{landscape}\\{landscape}Half_mid{str(self.block_size)}.png')),
-        '>': load(join(Images, f'Ground\\{landscape}\\{landscape}Half_right{str(self.block_size)}.png'))
+        '>': load(join(Images, f'Ground\\{landscape}\\{landscape}Half_right{str(self.block_size)}.png')),
+        '~': load(join(Images, f'Tiles\\lavaTop_high.png')),
         }
 
         # красивые ключи, так оставим
@@ -110,11 +110,11 @@ class environment(Sprite):
         }
 
         self.DOORS_IMAGE_DICT = {
-        'b': ('Blue', load(join(Images, 'Tiles\\Blue_doorClosed.png'))),
-        'r': ('Red', load(join(Images, 'Tiles\\Red_doorClosed.png'))),
-        'g': ('Green', load(join(Images, 'Tiles\\Green_doorClosed.png'))),
+        'b': ('Blue',   load(join(Images, 'Tiles\\Blue_doorClosed.png'))),
+        'r': ('Red',    load(join(Images, 'Tiles\\Red_doorClosed.png'))),
+        'g': ('Green',  load(join(Images, 'Tiles\\Green_doorClosed.png'))),
         'y': ('Yellow', load(join(Images, 'Tiles\\Yellow_doorClosed.png'))),
-        'o': ('oo_', load(join(Images, 'Tiles\\opened_door.png')))
+        'o': ('oo_',    load(join(Images, 'Tiles\\opened_door.png')))
         }
 
         DELAY = 150
@@ -122,7 +122,6 @@ class environment(Sprite):
         self.flagYellow = PygAnimation([(join(Images, 'Items\\flagYellow82.png'), DELAY),
                                         (join(Images, 'Items\\flagYellow282.png'), DELAY)])
         self.flagYellow_down = load(join(Images, 'Items\\flagYellow_down82.png'))
-
 
         #   Конец описания графики
 
@@ -150,29 +149,29 @@ class environment(Sprite):
                     self.platforms_group.add(pl)
                     self.whole_group.add(pl)
                 elif col in self.ITEMS_IMAGE_DICT.keys():
-                    it = design(x, y, self.ITEMS_IMAGE_DICT[col][1], sign=self.ITEMS_IMAGE_DICT[col][0])
+                    it = design(x, y, self.ITEMS_IMAGE_DICT[col][1], self.ITEMS_IMAGE_DICT[col][0])
                     self.items_group.add(it)
                     self.whole_group.add(it)
                 elif col in self.DOORS_IMAGE_DICT.keys():
+                    # наверное здесь стоит записывать, на каком она уровне стоит
+                    # тем более мы его зачем-то знаем
                     do = design(x, y - 82, self.DOORS_IMAGE_DICT[col][1], self.DOORS_IMAGE_DICT[col][0])
                     self.doors_group.add(do)
                     self.whole_group.add(do)
 
                 elif col == 'f':
-                    it = design(x, y, self.flagYellow_down, 'f',
+                    it = design(x, y,
+                                self.flagYellow_down, 'f',
                                 True,
                                 self.flagYellow)
                     self.whole_group.add(it)
 
                 elif col == 's':
-                    saw = enemy([x, y + 52], 'spinnerHalf')
+                    saw = enemy([x, y+52], 'spinnerHalf')
                     #   С КООРДИНАТОЙ ТАК ПОТОМУ,
                     #   ЧТО САМИ КАРТИНКИ ПИЛЫ МЕНЬШЕ
                     self.enemies_group.add(saw)
                     self.whole_group.add(saw)
-
-                # elif col == 'p':
-                #     self.character_coords = [x, y]
 
                     #   ЕСЛИ ТАК ПЫТАТЬСЯ РИСОВАТЬ, ТО У НИХ НЕТ .IMAGE И ЭТО
                     #   ПРОБЛЕМА ПОТОМУ, ЧТО МЫ ХОТИМ НЕ ПРОСТО ОДНУ ПИКЧУ
@@ -182,6 +181,11 @@ class environment(Sprite):
                     #
                     #   РЕШЕНИЕ: ПРОСТО СДЕЛАТЬ УСЛОВИЕ В ПРОХОДЕ ПО ВСЕМ
                     #            ЭЛЕМЕНТАМ НА ПОПАДАНИЕ В ПОДГРУПППЫ
+                elif col == 'L':
+                    lava_snake = enemy([x+15 , y-50], 'snakeLava', isActive=True)
+                    self.enemies_group.add(lava_snake)
+                    self.whole_group.add(lava_snake)
+
                 # elif col == 'i':
                 #     spider = enemy([x, y + 30], 'spider')
                 #     self.enemies_group.add(spider)

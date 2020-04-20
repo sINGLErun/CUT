@@ -158,8 +158,8 @@ class dchar(Model):
         self.isInBag   = False
         self.isDancing = False
 
-        self.isIncreasing_speed = False
-        self.isDecreasing_speed = False
+        # self.isIncreasing_speed = False
+        # self.isDecreasing_speed = False
         #   возможность лазать и лестницы
         #   self.isClimbing
 
@@ -249,9 +249,6 @@ class dchar(Model):
         '''
         Проходим по коллекции ключей и смотрим, стоит ли их убирать.
         Если да, то складываем их в сумку, запоминая цвет.
-        ПРОБЛЕМЫ:
-            + ПОВТОРЯЮЩИЕСЯ КЛЮЧИ
-            + РАЗЛИЧНОЕ КОЛИЧЕСТВО КЛЮЧЕЙ НА УРОВНЕ
         '''
         if collide_rect(self, item):
             item.remove(environment.items_group)
@@ -261,19 +258,15 @@ class dchar(Model):
     def door_opening(self, environment, door):
         '''
         Можно и нужно ли открывать двери?
-        БАГ:
-            + МЫ ОТКРЫВАЕМ ВСЕ ДВЕРИ СИНИМИ КЛЮЧАМИ
-              просто берём по цвету двери ключи
-        ПРОБЛЕМА В ЛОГИКЕ:
-            + ТЕБЕ НЕ СТОИТ ЗАПУСКАТЬ ТУТ ЦИКЛЫ ЕСЛИ ТЫ ИХ ИЗ ЦИКЛА ВЫЗЫВАЕШЬ
-              дверь передаётся вместе с окружением
         '''
         if (self.bag.count(f'{door.sign} key') > 0) and collide_rect(self, door):
             #   вставили ключ
             self.bag.remove(f'{door.sign} key')
             #   дверь открылась
             x, y = door.rect.x, door.rect.y
-            it = design(x, y, environment.DOORS_IMAGE_DICT['o'][1], f'o{door.sign[0]}{str(int(environment.level_number) + 1)}')
+            it = design(x, y,
+                        environment.DOORS_IMAGE_DICT['o'][1],
+                        f'o{door.sign[0]}{str(int(environment.level_number) + 1)}')
             door.remove(environment.doors_group)
             door.remove(environment.whole_group)
 
@@ -309,12 +302,12 @@ class dchar(Model):
                     self.isRight = False
                     self.isWalking = True
                     self.velocity[0] = -self.speed
-                    #self.isIncreasing_speed = True
+                    # self.isIncreasing_speed = True
                 elif keys[K_RIGHT]:
                     self.isRight = True
                     self.isWalking = True
                     self.velocity[0] = self.speed
-                    #self.isIncreasing_speed = True
+                    # self.isIncreasing_speed = True
                 else:
                     # if abs(self.velocity[0]) > 0.1:
                     #     self.isDecreasing_speed = True

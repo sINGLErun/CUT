@@ -53,59 +53,89 @@ def menu(CUT, var, noQuestion=False, Answer=None):
 
         if var == 'load':
             if not noQuestion:
-                print_text(CUT.win, "What level do you need to load?"           , 100,  90)
-                print_text(CUT.win, "Level 1         (1) : Introduction level;" , 100, 130)
-                print_text(CUT.win, "Level 2       (2) : Smart level;"          , 100, 170)
-                print_text(CUT.win, "Level 3       (3) : Final level;"          , 100, 210)
+                print_text(CUT.win, "What level do you need to load?", 100,  90)
+                print_text(CUT.win, "Level 1         (1) : Introduction level;", 100, 130)
+                print_text(CUT.win, "Level 2       (2) : Smart level;", 100, 170)
+                print_text(CUT.win, "Level 3       (3) : Final level;", 100, 210)
                 print_text(CUT.win, "Saved files  (s) : Start from saved point;", 100, 250)
 
                 for ev in event.get():
                     # if ev.type == QUIT: CUT.game_over = True; mixer.music.stop()
                     if ev.type == KEYDOWN:
                         # if ev.key == K_ESCAPE: CUT.game_over = True; mixer.music.stop()
-                        if ev.key == K_1: inMenu = False; return load('1', CUT.screen_bounds)
-                        if ev.key == K_2: inMenu = False; return load('2', CUT.screen_bounds)
-                        if ev.key == K_3: inMenu = False; return load('3', CUT.screen_bounds)
-                        if ev.key == K_s: inMenu = False; return load('s', CUT.screen_bounds)
+                        if ev.key == K_1:
+                            inMenu = False
+                            return load('1', CUT.screen_bounds)
+                        if ev.key == K_2:
+                            inMenu = False
+                            return load('2', CUT.screen_bounds)
+                        if ev.key == K_3:
+                            inMenu = False
+                            return load('3', CUT.screen_bounds)
+                        if ev.key == K_s:
+                            inMenu = False
+                            return load('s', CUT.screen_bounds)
             else:
                 inMenu = False
                 mixer.music.stop()
-                CUT.char, CUT.environment, CUT.camera = load(Answer, CUT.screen_bounds, needs_bag=True)
-
-
-
+                CUT.char, CUT.environment, CUT.camera = load(Answer,
+                                                             CUT.screen_bounds,
+                                                             needs_bag=True)
 
         if var == 'pause':
-            print_text(CUT.win, "Want to quit? (q)", 100, 90)
-            print_text(CUT.win, "Do we need to save your game? (s)", 100, 130)
-            print_text(CUT.win, "Or want to restart whole level? (r)", 100, 170)
+            print_text(CUT.win, "Want to (q)uit?", 100, 90)
+            print_text(CUT.win, "Do we need to (s)ave your game?", 100, 130)
+            print_text(CUT.win, "Or want to (r)estart whole level?", 100, 170)
 
             for ev in event.get():
-                if ev.type == QUIT: CUT.game_over = True; mixer.music.stop(); return None
+                if ev.type == QUIT:
+                    CUT.game_over = True
+                    mixer.music.stop()
+                    return None
                 if ev.type == KEYDOWN:
-                    if ev.key == K_q: inMenu = False; CUT.game_over = True; mixer.music.stop(); return None
-                    if ev.key == K_s: inMenu = False; save(CUT.char, CUT.environment)
+                    if ev.key == K_q:
+                        inMenu = False
+                        CUT.game_over = True
+                        mixer.music.stop()
+                        return None
+                    if ev.key == K_s:
+                        inMenu = False
+                        save(CUT.char, CUT.environment)
                     if ev.key == K_r:
                         inMenu = False
-                        CUT.char, CUT.environment, CUT.camera = load(CUT.environment.level_number, CUT.screen_bounds, False, True)
-                    if ev.key == K_ESCAPE: inMenu = False;
+                        CUT.char,
+                        CUT.environment,
+                        CUT.camera = load(CUT.environment.level_number,
+                                          CUT.screen_bounds,
+                                          False, True)
+                    if ev.key == K_ESCAPE:
+                        inMenu = False
+
                     #   возможно можно как-то с памятью поработать
                     #   забубенили класс
                     #   просто изи, так намного легче (10.12.2019, 0:48)
 
         if var == 'dead':
             print_text(CUT.win, "You died, but we can give one more chance", 100,  90)
-            print_text(CUT.win, "Want to start at the  (b)egining?",        100, 130)
-            print_text(CUT.win, "Start from (s)aved point?",               100, 170)
-            print_text(CUT.win, "If you disappointed, you can (q)uit",   100, 210)
+            print_text(CUT.win, "Want to start at the  (b)egining?", 100, 130)
+            print_text(CUT.win, "Start from (s)aved point?", 100, 170)
+            print_text(CUT.win, "If you disappointed, you can (q)uit", 100, 210)
 
             for ev in event.get():
-                if ev.type == QUIT: CUT.game_over = True; mixer.music.stop(); return None
+                if ev.type == QUIT:
+                    CUT.game_over = True
+                    mixer.music.stop()
+                    return None
                 if ev.type == KEYDOWN:
-                    if ev.key == K_ESCAPE: CUT.game_over = True; mixer.music.stop(); return None
+                    if ev.key == K_ESCAPE:
+                        CUT.game_over = True
+                        mixer.music.stop()
+                        return None
                     if ev.key == K_b:
                         inMenu = False
-                        CUT.char, CUT.environment, CUT.camera = load(CUT.environment.level_number, CUT.screen_bounds, False, True)
+                        CUT.char, CUT.environment, CUT.camera = load(CUT.environment.level_number,
+                                                                CUT.screen_bounds,
+                                                                False, True)
                     if ev.key == K_s:
                         inMenu = False
                         CUT.char, CUT.environment, CUT.camera = load('s', CUT.screen_bounds, False)

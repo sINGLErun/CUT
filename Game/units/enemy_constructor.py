@@ -30,8 +30,6 @@ Enemies = join(Images, 'Enemies')
 
 DELAY = 150
 
-#   Определим класс врага
-
 
 class enemy(Model):
     '''
@@ -43,7 +41,9 @@ class enemy(Model):
                  enemy_coords,
                  name,
                  walking_radius=3*82,
-                 detect_radius=5*82):
+                 detect_radius=5*82,
+                 isActive=False,
+                 isStaying=True):
 
         #   КОГДА Я НАЧАЛ ПИСАТЬ КОММЕНТАРИЙ Я ПОНЯЛ, ЧТО ПАССИВНЫМ ВРАГАМ
         #   ВООБЩЕ НЕ СТОИТ ЗНАТЬ ПРО ТО, ЧТО ОНИ МОГУТ СТУКАТЬСЯ О ПОЛ,
@@ -53,13 +53,14 @@ class enemy(Model):
         self.DEAD_IMAGE = load(join(Enemies, f'{name}_dead.png'))
         self.HIT_IMAGE  = load(join(Enemies, f'{name}_hit.png'))
 
-
-        self.isAlive   = True
-        self.isRight   = True
-        self.isMoving  = False
+        self.isAlive = True
+        self.isActive = isActive
+        self.isStaying = isStaying
+        # self.isRight   = True
+        # self.isMoving  = False
         self.isUndergo = False
 
-        self.walking_radius = walking_radius
+        # self.walking_radius = walking_radius
         self.detect_radius = detect_radius
         self.x0y0 = enemy_coords
 
@@ -72,16 +73,26 @@ class enemy(Model):
         else:
             win.blit(self.DEAD_IMAGE, xy)
 
-    def update(self, char, environment):
-        if (abs(self.rect.center - self.x0y0[0]) < self.walking_radius) and self.isRight:
-            self.rect.x += self.velocity[0]
-        elif not self.isRight:
-            self.rect.x -= self.velocity[0]
-        else:
-            self.isRight = ~self.isRight
-
+    # def update(self, char, environment):
+        # if (abs(self.rect.center - self.x0y0[0]) < self.walking_radius) and self.isRight:
+        #     self.rect.x += self.velocity[0]
+        # elif not self.isRight:
+        #     self.rect.x -= self.velocity[0]
+        # else:
+        #     self.isRight = ~self.isRight
+        #
         # if abs(self.rect.center + char.rect.center) < self.detect_radius:
         #     self.isUndergo = True
+
+    # def passive_attack(self, env):
+
+
+    def detect(self, char):
+        if abs(char.rect.center[0] - self.x0y0[0]) < self.detect_radius and self.rect.center[1] + 41 >= char.rect.center[1]:
+            # стоит добавить проверку на высоту
+            self.isUndergo = True
+        else:
+            self.isUndergo = False
 
     def hit(self, char):
         if collide_rect(self, char):
